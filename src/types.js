@@ -1,0 +1,22 @@
+export const CREATE_ATTRIBUTE = 'CREATE_ATTRIBUTE'
+
+export const SET_PATH_FOR_FORM = 'SET_PATH_FOR_FORM'
+
+export const SET_CREATING_FORM_DATE = 'SET_CREATING_FORM_DATE'
+
+export const CLEAR_FORM = 'CLEAR_FORM'
+
+export const EDIT = 'EDIT'
+
+export const SET_FORM_MODE = 'SET_FORM_MODE'
+
+export const DELETE = 'DELETE'
+
+export const OPEN_ERROR = 'OPEN_ERROR'
+export const CLOSE_ERROR = 'CLOSE_ERROR'
+
+export const SET_EDITING_SCHEMA = 'SET_EDITING_SCHEMA'
+
+export const SET_DELETING_NAME = 'SET_DELETING_NAME'
+
+export const SET_DELETING_DIALOG_VISIBLE = 'SET_DELETING_DIALOG_VISIBLE'
