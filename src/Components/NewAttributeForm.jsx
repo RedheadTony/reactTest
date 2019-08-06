@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import React, { useState, useEffect } from 'react'
+import { connect } from 'react-redux'
 import {
   Input,
   Select,
@@ -9,27 +9,28 @@ import {
   DialogContent,
   DialogActions,
   Button
-} from '@material-ui/core';
+} from '@material-ui/core'
 import styled from 'styled-components'
+import PropTypes from 'prop-types'
 
-import * as actions from '../actions';
-import {isValidValue} from '../utils/helper'
+import * as actions from '../actions'
+import { isValidValue } from '../utils/helper'
 
 const Content = styled.div`
   display: flex;
   flex-direction: column;
-`;
+`
 
 const InputWrapper = styled.div`
   margin-bottom: 25px;
-`;
+`
 
 const ErrorMessage = styled.div`
   color: #d32f2f;
   font-family: Roboto;
-`;
+`
 
-const menuItemStyle = { backgroundColor: 'white', color: 'black' };
+const menuItemStyle = { backgroundColor: 'white', color: 'black' }
 
 function NewAttributeForm({
   isOpen,
@@ -43,63 +44,60 @@ function NewAttributeForm({
   schemaEditingElement,
   openError
 }) {
-  const [type, setType] = useState(formType);
-  const [name, setName] = useState(formName);
-  const [value, setValue] = useState(formValue);
-  const [errors, setErrors] = useState({});
+  const [type, setType] = useState(formType)
+  const [name, setName] = useState(formName)
+  const [value, setValue] = useState(formValue)
+  const [errors, setErrors] = useState({})
   const onClick = () => {
-    const errorsObj = {};
+    const errorsObj = {}
     if (!name) {
-      errorsObj.name = true;
+      errorsObj.name = true
     }
     if (!value && type === 'string') {
-      errorsObj.value = true;
+      errorsObj.value = true
     }
     if (errorsObj.name || errorsObj.value) {
-      setErrors(errorsObj);
+      setErrors(errorsObj)
       return
     }
     if (!schemaEditingElement[name] || formName === name) {
-      const typeForm = type === 'string' ? value : undefined;
-      close();
+      const typeForm = type === 'string' ? value : undefined
+      close()
       if (formMode === 'create') {
         createNewAttribute(name, typeForm)
       } else {
-        editAttribute(name, typeForm);
+        editAttribute(name, typeForm)
         close()
       }
     } else {
       openError()
     }
-  };
+  }
   const onSelectChange = e => {
-    setType(e.target.value);
-    setValue('');
-  };
-  useEffect(
-    () => {
-      if (isOpen) {
-        setType(formType);
-        setName(formName);
-        setValue(formValue);
-        setErrors({});
-      }
-    },
-    [isOpen, formType, formName, formValue]
-  );
+    setType(e.target.value)
+    setValue('')
+  }
+  useEffect(() => {
+    if (isOpen) {
+      setType(formType)
+      setName(formName)
+      setValue(formValue)
+      setErrors({})
+    }
+  }, [isOpen, formType, formName, formValue])
 
   const onNameChange = e => {
-    const { value } = e.target;
+    const { value } = e.target
     if (isValidValue(value) || !value) {
-      setName(value);
+      setName(value)
     }
-  };
+  }
   const onValueChange = e => {
-    const { value } = e.target;
+    const { value } = e.target
     if (isValidValue(value) || !value) {
-      setValue(value);
+      setValue(value)
     }
-  };
+  }
   return (
     <Dialog open={isOpen} onClose={close}>
       <DialogTitle>
@@ -114,25 +112,17 @@ function NewAttributeForm({
               style={{ width: 300 }}
               placeholder="Название"
             />
-            {errors.name && (
-              <ErrorMessage>
-                Поле обязательно
-              </ErrorMessage>
-            )}
+            {errors.name && <ErrorMessage>Поле обязательно</ErrorMessage>}
           </InputWrapper>
           <InputWrapper>
             <Select
               style={{ width: 300 }}
               value={type}
               onChange={onSelectChange}>
-              <MenuItem
-                value="string"
-                style={menuItemStyle}>
+              <MenuItem value="string" style={menuItemStyle}>
                 Строка
               </MenuItem>
-              <MenuItem
-                value="component"
-                style={menuItemStyle}>
+              <MenuItem value="component" style={menuItemStyle}>
                 Компонент
               </MenuItem>
             </Select>
@@ -145,11 +135,7 @@ function NewAttributeForm({
                 onChange={onValueChange}
                 placeholder="Значение"
               />
-              {errors.value && (
-                <ErrorMessage>
-                  Поле обязательно
-                </ErrorMessage>
-              )}
+              {errors.value && <ErrorMessage>Поле обязательно</ErrorMessage>}
             </InputWrapper>
           )}
         </Content>
@@ -167,10 +153,11 @@ function NewAttributeForm({
 }
 
 const mapDispatchToProps = dispatch => ({
-  createNewAttribute: (name, value) => dispatch(actions.createAttribute(name, value)),
+  createNewAttribute: (name, value) =>
+    dispatch(actions.createAttribute(name, value)),
   editAttribute: (name, value) => dispatch(actions.editAttribute(name, value)),
   openError: () => dispatch(actions.openError())
-});
+})
 
 const mapStateToProps = state => ({
   formName: state.formName,
@@ -178,7 +165,20 @@ const mapStateToProps = state => ({
   formValue: state.formValue,
   formMode: state.formMode,
   schemaEditingElement: state.schemaEditingElement
-});
+})
+
+NewAttributeForm.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  close: PropTypes.func.isRequired,
+  createNewAttribute: PropTypes.func.isRequired,
+  formName: PropTypes.string.isRequired,
+  formType: PropTypes.string.isRequired,
+  formValue: PropTypes.string.isRequired,
+  editAttribute: PropTypes.func.isRequired,
+  formMode: PropTypes.string.isRequired,
+  schemaEditingElement: PropTypes.object.isRequired,
+  openError: PropTypes.func.isRequired
+}
 
 export default connect(
   mapStateToProps,

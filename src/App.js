@@ -1,10 +1,10 @@
-import React from 'react';
-import { Provider } from 'react-redux';
-import './App.css';
-import configureStore from './store';
-import RootComponent from './Components/RootComponent';
+import React from 'react'
+import { Provider } from 'react-redux'
+import './App.css'
+import configureStore from './store'
+import RootComponent from './Components/RootComponent'
 
-const store = configureStore();
+const store = configureStore()
 
 function App() {
   return (

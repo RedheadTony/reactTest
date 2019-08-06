@@ -10,7 +10,7 @@ import {
   CLOSE_CREATING_DIALOG,
   CLOSE_DELETING_DIALOG
 } from './types'
-import {valueIsChanged, getChangeableValue} from "./utils/helper";
+import { valueIsChanged, getChangeableValue } from './utils/helper'
 
 const init = {
   result: {},
@@ -24,28 +24,28 @@ const init = {
   errorIsOpen: false,
   deletingName: '',
   deletingDialogIsOpen: false
-};
+}
 
 export default function stuff(state = init, action) {
   switch (action.type) {
     case CREATE_ATTRIBUTE: {
-      const newResult = { ...state.result };
-      const changeableValue = getChangeableValue(newResult, state.pathForForm);
-      changeableValue[action.name] = action.value || {};
+      const newResult = { ...state.result }
+      const changeableValue = getChangeableValue(newResult, state.pathForForm)
+      changeableValue[action.name] = action.value || {}
       return {
         ...state,
         result: newResult
       }
     }
     case EDIT: {
-      const newResult = { ...state.result };
+      const newResult = { ...state.result }
       if (action.name === state.formName) {
         if (action.value !== state.formValue) {
           const changeableValue = getChangeableValue(
             newResult,
             state.pathForForm
-          );
-          changeableValue[action.name] = action.value || {};
+          )
+          changeableValue[action.name] = action.value || {}
           return {
             ...state,
             result: newResult
@@ -59,10 +59,10 @@ export default function stuff(state = init, action) {
           const changeableValue = getChangeableValue(
             newResult,
             state.pathForForm
-          );
-          changeableValue[action.name] = action.value || {};
+          )
+          changeableValue[action.name] = action.value || {}
           // удалить старый
-          delete changeableValue[state.formName];
+          delete changeableValue[state.formName]
           return {
             ...state,
             result: newResult
@@ -71,7 +71,7 @@ export default function stuff(state = init, action) {
           const changeableValue = getChangeableValue(
             newResult,
             state.pathForForm
-          );
+          )
           // копировать старое значение
           if (typeof changeableValue[state.formName] === 'string') {
             changeableValue[action.name] = changeableValue[state.formName]
@@ -82,7 +82,7 @@ export default function stuff(state = init, action) {
           }
 
           // удалить старый
-          delete changeableValue[state.formName];
+          delete changeableValue[state.formName]
           return {
             ...state,
             result: newResult
@@ -91,24 +91,24 @@ export default function stuff(state = init, action) {
       }
     }
     case DELETE: {
-      const newResult = { ...state.result };
-      const changeableValue = getChangeableValue(newResult, state.pathForForm);
-      delete changeableValue[state.deletingName];
+      const newResult = { ...state.result }
+      const changeableValue = getChangeableValue(newResult, state.pathForForm)
+      delete changeableValue[state.deletingName]
       return {
         ...state,
         result: newResult
-      };
+      }
     }
     case OPEN_ERROR:
       return {
         ...state,
         errorIsOpen: true
-      };
+      }
     case CLOSE_ERROR:
       return {
         ...state,
         errorIsOpen: false
-      };
+      }
     case OPEN_CREATING_DIALOG:
       return {
         ...state,
@@ -119,12 +119,12 @@ export default function stuff(state = init, action) {
         formName: '',
         formValue: '',
         formType: 'string'
-      };
+      }
     case CLOSE_CREATING_DIALOG:
       return {
         ...state,
-        formIsOpen: false,
-      };
+        formIsOpen: false
+      }
     case OPEN_EDITING_DIALOG:
       return {
         ...state,
@@ -135,19 +135,19 @@ export default function stuff(state = init, action) {
         formName: action.name,
         formValue: action.value,
         formType: action.formType
-      };
+      }
     case OPEN_DELETING_DIALOG:
       return {
         ...state,
         deletingDialogIsOpen: true,
         pathForForm: action.path,
         deletingName: action.name
-      };
+      }
     case CLOSE_DELETING_DIALOG:
       return {
         ...state,
         deletingDialogIsOpen: false
-      };
+      }
     default:
       return state
   }
