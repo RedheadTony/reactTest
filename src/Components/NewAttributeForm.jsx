@@ -13,8 +13,7 @@ import {
 import styled from 'styled-components'
 
 import * as actions from '../actions';
-
-const isValidValue = value => value.match(/^[а-яА-ЯёЁa-zA-Z0-9]+$/);
+import {isValidValue} from '../utils/helper'
 
 const Content = styled.div`
   display: flex;
