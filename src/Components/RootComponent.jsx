@@ -1,11 +1,29 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Snackbar, Button, SnackbarContent } from '@material-ui/core';
+import styled from 'styled-components';
 
 import Element from './Element';
 import Form from './NewAttributeForm';
 import DeletingForm from './DeletingForm';
 import * as actions from '../actions';
+
+const TreeWrapper = styled.div`
+  padding-top: 100px;
+  padding-bottom: 100px;
+  overflow-x: auto
+`;
+
+const TreeContainer = styled.div`
+  padding-right: 50px;
+  padding-left: 50px;
+  display: inline-block;
+`;
+
+const ResultWrapper = styled.div`
+  padding-right: 50px;
+  padding-left: 50px;
+`;
 
 function RootComponent(props) {
   const {
@@ -26,13 +44,8 @@ function RootComponent(props) {
 
   return (
     <>
-      <div style={{ paddingTop: 100, paddingBottom: 100, overflowX: 'auto' }}>
-        <div
-          style={{
-            paddingRight: 50,
-            paddingLeft: 50,
-            display: 'inline-block'
-          }}>
+      <TreeWrapper>
+        <TreeContainer>
           <Form isOpen={formIsOpen} close={closeCreatingForm} />
           <DeletingForm
             onDelete={deleteAttr}
@@ -74,16 +87,13 @@ function RootComponent(props) {
             path=""
             schema={schema}
           />
-        </div>
-      </div>
-      <div style={{
-          paddingRight: 50,
-          paddingLeft: 50
-        }}>
+        </TreeContainer>
+      </TreeWrapper>
+      <ResultWrapper>
         Схема в формате JSON:
         <br />
         {JSON.stringify(schema)}
-      </div>
+      </ResultWrapper>
     </>
   )
 }

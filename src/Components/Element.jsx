@@ -1,5 +1,27 @@
 import React, { useState } from 'react'
 import { Button, Icon } from '@material-ui/core'
+import styled from 'styled-components'
+
+const Container = styled.div`
+  border-left: 1px solid black;
+  width: min-content;
+`;
+
+const ButtonsGroup = styled.div`
+  display: flex;
+  width: 200px;
+`;
+
+const Title = styled.div`
+  width: 100px;
+  flex: none;
+  cursor: pointer;
+`;
+
+const AttributesContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
 
 function Element(props) {
   const [isOpen, setIsOpen] = useState(false);
@@ -38,32 +60,26 @@ function Element(props) {
       const onDelete = () => deleteAttribute(key);
       if (typeof value === 'string') {
         listJsx.push(
-          <div key={key} style={{ display: 'flex', alignItems: 'center' }}>
+          <AttributesContainer key={key}>
             <Button onClick={onDelete}><Icon>delete</Icon></Button>
-            <div
+            <Title
               title={key.length < 9 ? null : key}
-              onClick={onEdit}
-              style={{ width: 100, flex: 'none', cursor: 'pointer' }}>
+              onClick={onEdit}>
               {key.length < 9 ? key : `${key.substr(0, 8)}...`}:
-            </div>
+            </Title>
             <div>{schema[key]}</div>
-          </div>
+          </AttributesContainer>
         )
       } else {
         listJsx.push(
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center'
-            }}
+          <AttributesContainer
             key={key}>
             <Button onClick={onDelete}><Icon>delete</Icon></Button>
-            <div
+            <Title
               title={key.length < 9 ? null : key}
-              onClick={onEdit}
-              style={{ width: 100, flex: 'none', cursor: 'pointer' }}>
+              onClick={onEdit}>
               {key.length < 10 ? key : `${key.substr(0, 9)}...`}:
-            </div>
+            </Title>
 
             <Element
               schema={schema[key]}
@@ -72,7 +88,7 @@ function Element(props) {
               path={path ? `${path}.${key}` : key}
               openDeletingDialog={openDeletingDialog}
             />
-          </div>
+          </AttributesContainer>
         )
       }
     }
@@ -80,17 +96,13 @@ function Element(props) {
   }
 
   return (
-    <div
-      style={{
-        borderLeft: '1px solid black',
-        width: 'min-content'
-      }}>
-      <div style={{ display: 'flex', width: 200 }}>
+    <Container>
+      <ButtonsGroup>
         <Button onClick={toggleOpen}>Element</Button>
         <Button onClick={createAttribute}><Icon>add</Icon></Button>
-      </div>
+      </ButtonsGroup>
       {isOpen && <div style={{ paddingLeft: 25 }}>{renderLines(schema)}</div>}
-    </div>
+    </Container>
   )
 }
 

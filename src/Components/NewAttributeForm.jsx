@@ -10,10 +10,27 @@ import {
   DialogActions,
   Button
 } from '@material-ui/core';
+import styled from 'styled-components'
 
 import * as actions from '../actions';
 
 const isValidValue = value => value.match(/^[а-яА-ЯёЁa-zA-Z0-9]+$/);
+
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const InputWrapper = styled.div`
+  margin-bottom: 25px;
+`;
+
+const ErrorMessage = styled.div`
+  color: #d32f2f;
+  font-family: Roboto;
+`;
+
+const menuItemStyle = { backgroundColor: 'white', color: 'black' };
 
 function NewAttributeForm({
   isOpen,
@@ -90,8 +107,8 @@ function NewAttributeForm({
         {formMode === 'create' ? 'Создание' : 'Редактирование'} атрибута
       </DialogTitle>
       <DialogContent>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <div style={{ marginBottom: 25 }}>
+        <Content>
+          <InputWrapper>
             <Input
               value={name}
               onChange={onNameChange}
@@ -99,28 +116,30 @@ function NewAttributeForm({
               placeholder="Название"
             />
             {errors.name && (
-              <div style={{ color: '#d32f2f', fontFamily: 'Roboto' }}>
+              <ErrorMessage>
                 Поле обязательно
-              </div>
+              </ErrorMessage>
             )}
-          </div>
-          <Select
-            style={{ marginBottom: 25, width: 300 }}
-            value={type}
-            onChange={onSelectChange}>
-            <MenuItem
-              value="string"
-              style={{ backgroundColor: 'white', color: 'black' }}>
-              Строка
-            </MenuItem>
-            <MenuItem
-              value="component"
-              style={{ backgroundColor: 'white', color: 'black' }}>
-              Компонент
-            </MenuItem>
-          </Select>
+          </InputWrapper>
+          <InputWrapper>
+            <Select
+              style={{ width: 300 }}
+              value={type}
+              onChange={onSelectChange}>
+              <MenuItem
+                value="string"
+                style={menuItemStyle}>
+                Строка
+              </MenuItem>
+              <MenuItem
+                value="component"
+                style={menuItemStyle}>
+                Компонент
+              </MenuItem>
+            </Select>
+          </InputWrapper>
           {type === 'string' && (
-            <div>
+            <InputWrapper>
               <Input
                 style={{ width: 300 }}
                 value={value}
@@ -128,13 +147,13 @@ function NewAttributeForm({
                 placeholder="Значение"
               />
               {errors.value && (
-                <div style={{ color: '#d32f2f', fontFamily: 'Roboto' }}>
+                <ErrorMessage>
                   Поле обязательно
-                </div>
+                </ErrorMessage>
               )}
-            </div>
+            </InputWrapper>
           )}
-        </div>
+        </Content>
       </DialogContent>
       <DialogActions>
         <Button onClick={close} color="primary">
