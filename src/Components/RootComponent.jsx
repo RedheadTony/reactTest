@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { Snackbar, Button, SnackbarContent } from '@material-ui/core';
 
@@ -11,26 +11,18 @@ function RootComponent(props) {
   const {
     pathForForm,
     deletingName,
-    setDeletingName,
-    deletingDialogVisible,
-    setDeletingDialogVisible,
+    deletingDialogIsOpen,
     schema,
     closeError,
     errorIsOpen,
-    setPath,
-    clearForm,
-    setEditDate,
     deleteAttr,
-    setFormMode,
-    setEditingSchema
+    openCreatingDialog,
+    formIsOpen,
+    closeCreatingForm,
+    openEditingForm,
+    openDeletingDialog,
+    closeDeletingDialog
   } = props;
-  const [isOpen, setIsOpen] = useState(false);
-  const open = () => setIsOpen(true);
-  const close = () => setIsOpen(false);
-
-  const openDeletingDialog = () => setDeletingDialogVisible(true);
-
-  const closeDeletingDialog = () => setDeletingDialogVisible(false);
 
   return (
     <>
@@ -41,10 +33,10 @@ function RootComponent(props) {
             paddingLeft: 50,
             display: 'inline-block'
           }}>
-          <Form isOpen={isOpen} close={close} />
+          <Form isOpen={formIsOpen} close={closeCreatingForm} />
           <DeletingForm
             onDelete={deleteAttr}
-            open={deletingDialogVisible}
+            open={deletingDialogIsOpen}
             path={pathForForm}
             name={deletingName}
             close={closeDeletingDialog}
@@ -76,16 +68,11 @@ function RootComponent(props) {
             />
           </Snackbar>
           <Element
+            openEditingForm={openEditingForm}
+            openCreatingDialog={openCreatingDialog}
             openDeletingDialog={openDeletingDialog}
-            setDeletingName={setDeletingName}
-            openAddingForm={open}
             path=""
             schema={schema}
-            clearForm={clearForm}
-            setEditDate={setEditDate}
-            setPath={setPath}
-            setFormMode={setFormMode}
-            setEditingSchema={setEditingSchema}
           />
         </div>
       </div>
@@ -104,23 +91,21 @@ function RootComponent(props) {
 const mapStateToProps = state => ({
   schema: state.result,
   errorIsOpen: state.errorIsOpen,
-  deletingDialogVisible: state.deletingDialogVisible,
+  deletingDialogIsOpen: state.deletingDialogIsOpen,
   pathForForm: state.pathForForm,
-  deletingName: state.deletingName
+  deletingName: state.deletingName,
+  formIsOpen: state.formIsOpen
 });
 
 const mapDispatchToProps = dispatch => ({
   closeError: () => dispatch(actions.closeError()),
-  setPath: path => dispatch(actions.setPathForForm(path)),
-  clearForm: () => dispatch(actions.clearForm()),
-  setEditDate: (name, value, type) =>
-    dispatch(actions.setCreatingFormDate(name, value, type)),
   deleteAttr: () => dispatch(actions.deleteAttribute()),
-  setFormMode: mode => dispatch(actions.setFormMode(mode)),
-  setEditingSchema: schema => dispatch(actions.setEditingSchema(schema)),
-  setDeletingDialogVisible: visible =>
-    dispatch(actions.setDeletingDialogVisible(visible)),
-  setDeletingName: name => dispatch(actions.setDeletingName(name))
+  openCreatingDialog: (schema, path) => dispatch(actions.openCreatingDialog(schema, path)),
+  closeCreatingForm: () => dispatch(actions.closeCreatingForm()),
+  openEditingForm: (name, value, type, schema, path) =>
+      dispatch(actions.openEditingForm(name, value, type, schema, path)),
+  openDeletingDialog: (path, name) => dispatch(actions.openDeletingDialog(path, name)),
+  closeDeletingDialog: () => dispatch(actions.closeDeletingDialog())
 });
 
 export default connect(

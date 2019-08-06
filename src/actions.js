@@ -6,36 +6,43 @@ export const createAttribute = (name, value) => ({
   value
 });
 
+export const openCreatingDialog = (schema, path) => ({
+  type: types.OPEN_CREATING_DIALOG,
+  schema,
+  path,
+});
+
+export const openEditingForm = (name, value, type, schema, path) => ({
+  type: types.OPEN_EDITING_DIALOG,
+  schema,
+  path,
+  name,
+  value,
+  formType: type
+});
+
+export const closeCreatingForm = () => ({
+  type: types.CLOSE_CREATING_DIALOG
+});
+
+export const openDeletingDialog = (path, name) => ({
+  type: types.OPEN_DELETING_DIALOG,
+  path,
+  name
+});
+
+export const closeDeletingDialog = () => ({
+  type: types.CLOSE_DELETING_DIALOG
+});
+
 export const editAttribute = (name, value) => ({
   type: types.EDIT,
   name,
   value
 });
 
-export const setPathForForm = path => ({
-  type: types.SET_PATH_FOR_FORM,
-  path
-});
-
-export const setCreatingFormDate = (name, value, type, mode) => ({
-  type: types.SET_CREATING_FORM_DATE,
-  name,
-  value,
-  formType: type,
-  mode
-});
-
-export const clearForm = () => ({
-  type: types.CLEAR_FORM
-});
-
 export const deleteAttribute = () => ({
   type: types.DELETE
-});
-
-export const setFormMode = mode => ({
-  type: types.SET_FORM_MODE,
-  mode
 });
 
 export const openError = () => ({
@@ -44,19 +51,4 @@ export const openError = () => ({
 
 export const closeError = () => ({
   type: types.CLOSE_ERROR
-});
-
-export const setEditingSchema = schema => ({
-  type: types.SET_EDITING_SCHEMA,
-  schema
-});
-
-export const setDeletingName = name => ({
-  type: types.SET_DELETING_NAME,
-  name
-});
-
-export const setDeletingDialogVisible = visible => ({
-  type: types.SET_DELETING_DIALOG_VISIBLE,
-  visible
 });

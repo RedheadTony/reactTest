@@ -1,16 +1,14 @@
 import {
   CREATE_ATTRIBUTE,
   EDIT,
-  SET_PATH_FOR_FORM,
-  SET_CREATING_FORM_DATE,
-  CLEAR_FORM,
   DELETE,
-  SET_FORM_MODE,
   OPEN_ERROR,
   CLOSE_ERROR,
-  SET_EDITING_SCHEMA,
-  SET_DELETING_NAME,
-  SET_DELETING_DIALOG_VISIBLE
+  OPEN_CREATING_DIALOG,
+  OPEN_EDITING_DIALOG,
+  OPEN_DELETING_DIALOG,
+  CLOSE_CREATING_DIALOG,
+  CLOSE_DELETING_DIALOG
 } from './types'
 
 const init = {
@@ -24,7 +22,7 @@ const init = {
   pathForForm: '',
   errorIsOpen: false,
   deletingName: '',
-  deletingDialogVisible: false
+  deletingDialogIsOpen: false
 }
 
 const getChangeableValue = (obj, pathForForm) => {
@@ -112,25 +110,6 @@ export default function stuff(state = init, action) {
         }
       }
     }
-    case SET_PATH_FOR_FORM:
-      return {
-        ...state,
-        pathForForm: action.path
-      }
-    case SET_CREATING_FORM_DATE:
-      return {
-        ...state,
-        formName: action.name,
-        formType: action.formType,
-        formValue: action.value
-      }
-    case CLEAR_FORM:
-      return {
-        ...state,
-        formName: '',
-        formType: 'string',
-        formValue: ''
-      }
     case DELETE: {
       const newResult = { ...state.result }
       const changeableValue = getChangeableValue(newResult, state.pathForForm)
@@ -138,38 +117,57 @@ export default function stuff(state = init, action) {
       return {
         ...state,
         result: newResult
-      }
+      };
     }
-    case SET_FORM_MODE:
-      return {
-        ...state,
-        formMode: action.mode
-      }
     case OPEN_ERROR:
       return {
         ...state,
         errorIsOpen: true
-      }
+      };
     case CLOSE_ERROR:
       return {
         ...state,
         errorIsOpen: false
-      }
-    case SET_EDITING_SCHEMA:
+      };
+    case OPEN_CREATING_DIALOG:
       return {
         ...state,
-        schemaEditingElement: action.schema
-      }
-    case SET_DELETING_NAME:
+        schemaEditingElement: action.schema,
+        pathForForm: action.path,
+        formIsOpen: true,
+        formMode: 'create',
+        formName: '',
+        formValue: '',
+        formType: 'string'
+      };
+    case CLOSE_CREATING_DIALOG:
       return {
         ...state,
+        formIsOpen: false,
+      };
+    case OPEN_EDITING_DIALOG:
+      return {
+        ...state,
+        formIsOpen: true,
+        formMode: 'edit',
+        schemaEditingElement: action.schema,
+        pathForForm: action.path,
+        formName: action.name,
+        formValue: action.value,
+        formType: action.formType
+      };
+    case OPEN_DELETING_DIALOG:
+      return {
+        ...state,
+        deletingDialogIsOpen: true,
+        pathForForm: action.path,
         deletingName: action.name
-      }
-    case SET_DELETING_DIALOG_VISIBLE:
+      };
+    case CLOSE_DELETING_DIALOG:
       return {
         ...state,
-        deletingDialogVisible: action.visible
-      }
+        deletingDialogIsOpen: false
+      };
     default:
       return state
   }

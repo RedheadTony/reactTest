@@ -5,38 +5,23 @@ function Element(props) {
   const [isOpen, setIsOpen] = useState(false);
   const toggleOpen = () => setIsOpen(!isOpen);
   const {
-    setDeletingName,
     openDeletingDialog,
     schema,
-    openAddingForm,
     path,
-    setPath,
-    clearForm,
-    setEditDate,
-    setFormMode,
-    setEditingSchema
+    openCreatingDialog,
+    openEditingForm
   } = props;
 
   const createAttribute = () => {
-    setFormMode('create');
-    setEditingSchema(schema);
-    clearForm();
-    setPath(path);
-    openAddingForm();
+    openCreatingDialog(schema, path);
   };
 
   const editAttribute = (name, value, type) => {
-    setFormMode('edit');
-    setEditingSchema(schema);
-    setEditDate(name, value, type);
-    setPath(path);
-    openAddingForm();
+    openEditingForm(name, value, type, schema, path);
   };
 
   const deleteAttribute = name => {
-    setPath(path);
-    setDeletingName(name);
-    openDeletingDialog();
+    openDeletingDialog(path, name);
   };
 
   function renderLines(schema) {
@@ -82,15 +67,10 @@ function Element(props) {
 
             <Element
               schema={schema[key]}
+              openCreatingDialog={openCreatingDialog}
+              openEditingForm={openEditingForm}
               path={path ? `${path}.${key}` : key}
-              openAddingForm={openAddingForm}
-              clearForm={clearForm}
               openDeletingDialog={openDeletingDialog}
-              setEditDate={setEditDate}
-              setPath={setPath}
-              setFormMode={setFormMode}
-              setDeletingName={setDeletingName}
-              setEditingSchema={setEditingSchema}
             />
           </div>
         )
